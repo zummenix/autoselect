@@ -4,6 +4,13 @@ version = "0.1.0"
 authors = ["Aleksey Kuznetsov <zummenix@gmail.com>"]
 edition = "2018"
 
-# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
-
 [dependencies]
+minreq = { version = "2.2", features = ["https-native"] }
+main_error = "0.1"
+scraper = "0.12"
+
+[profile.release]
+opt-level = "s"
+panic = "abort"
+lto = true
+
