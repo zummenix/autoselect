@@ -39,6 +39,12 @@ fn main() -> Result<(), main_error::MainError> {
     let selectors = Selectors::new();
     let document = get_html(BASE_URL)?;
     let mut items = scrape_items(&document, &selectors);
+    let number_of_pages = scrape_number_of_pages(&document);
+    for n in 2..=number_of_pages {
+        let url = format!("{}&PAGEN_1={}", BASE_URL, n);
+        let document = get_html(&url)?;
+        items.extend(scrape_items(&document, &selectors));
+    }
     items.sort_by_key(|item| item.price());
     for item in &items {
         println!("{}", item);
@@ -77,6 +83,15 @@ fn scrape_items(document: &Html, selectors: &Selectors) -> Vec<Item> {
         n += 1
     }
     items
+}
+
+fn scrape_number_of_pages(document: &Html) -> u32 {
+    let pagination_selector = Selector::parse("body > div.wrap-main > section.content-main > div > div.catalog-header > div.catalog-header__pagination > div").unwrap();
+    document
+        .select(&pagination_selector)
+        .next()
+        .and_then(|el| el.text().map(|s| s.trim().parse().unwrap_or(0u32)).max())
+        .unwrap_or(1)
 }
 
 fn parse_price(s: &str) -> Option<u64> {
@@ -134,6 +149,20 @@ mod tests {
         let document = Html::parse_document(html);
         let items = scrape_items(&document, &selectors);
         assert_debug_snapshot!(items);
+    }
+
+    #[test]
+    fn scrape_single_page_pagination() {
+        let html = include_str!("../fixtures/single_page.html");
+        let document = Html::parse_document(html);
+        assert_eq!(scrape_number_of_pages(&document), 1);
+    }
+
+    #[test]
+    fn scrape_multiple_pages_pagination() {
+        let html = include_str!("../fixtures/multiple_pages.html");
+        let document = Html::parse_document(html);
+        assert_eq!(scrape_number_of_pages(&document), 2);
     }
 
     #[test]
