@@ -3,6 +3,7 @@ use std::fmt;
 
 const BASE_URL: &str = "https://autoselect.ru/auto/?&set_filter=Показать&n123=&arrFilter_118_848981442=Y&arrFilter_90_MIN=&arrFilter_90_MAX=&arrFilter_67_2645610321=Y&arrFilter_84_MIN=&arrFilter_84_MAX=&arrFilter_85_MIN=&arrFilter_85_MAX=&arrFilter_55=4088188550&arrFilter_56_MIN=&arrFilter_56_MAX=&arrFilter_67_2645610321=Y&arrFilter_67_511942527=Y&arrFilter_67_2274021061=Y&arrFilter_66_3808539628=Y&arrFilter_66_174200537=Y&arrFilter_59_MIN=&arrFilter_59_MAX=";
 
+#[derive(Debug)]
 struct Item {
     name: Option<String>,
     info: Option<String>,
@@ -35,37 +36,47 @@ impl fmt::Display for Item {
 }
 
 fn main() -> Result<(), main_error::MainError> {
-    let resp = minreq::get(BASE_URL).with_timeout(10).send()?;
+    let selectors = Selectors::new();
+    let document = get_html(BASE_URL)?;
+    let mut items = scrape_items(&document, &selectors);
+    items.sort_by_key(|item| item.price());
+    for item in &items {
+        println!("{}", item);
+    }
+    Ok(())
+}
+
+fn get_html(url: &str) -> Result<Html, main_error::MainError> {
+    let resp = minreq::get(url).with_timeout(10).send()?;
     let html = resp.as_str()?;
-    let document = Html::parse_document(html);
-    let mut parsed_items: Vec<Item> = Vec::new();
+    Ok(Html::parse_document(html))
+}
+
+fn scrape_items(document: &Html, selectors: &Selectors) -> Vec<Item> {
+    let mut items: Vec<Item> = Vec::new();
     let mut n: u32 = 1;
-    while let Some(element) = document.select(&item(n)).next() {
-        parsed_items.push(Item {
+    while let Some(element) = document.select(&item_selector(n)).next() {
+        items.push(Item {
             name: element
-                .select(&item_link())
+                .select(&selectors.link)
                 .next()
                 .map(|el| prettify(el, " ")),
             info: element
-                .select(&item_info())
+                .select(&selectors.info)
                 .next()
                 .map(|el| prettify(el, "")),
             price: element
-                .select(&item_price())
+                .select(&selectors.price)
                 .next()
                 .map(|el| prettify(el, " ")),
             relative_url: element
-                .select(&item_link())
+                .select(&selectors.link)
                 .next()
                 .and_then(|el| el.value().attr("href").map(String::from)),
         });
         n += 1
     }
-    parsed_items.sort_by_key(|item| item.price());
-    for item in &parsed_items {
-        println!("{}", item);
-    }
-    Ok(())
+    items
 }
 
 fn parse_price(s: &str) -> Option<u64> {
@@ -85,28 +96,55 @@ fn prettify(element: ElementRef, separator: &str) -> String {
         .join(separator)
 }
 
-fn item(n: u32) -> Selector {
+struct Selectors {
+    link: Selector,
+    info: Selector,
+    price: Selector,
+}
+
+impl Selectors {
+    fn new() -> Self {
+        Selectors {
+            link: Selector::parse("div.item__content > h4 > a").unwrap(),
+            info: Selector::parse("div.item__content > div.item__info").unwrap(),
+            price: Selector::parse("div.item__content > div.item__price-row > div").unwrap(),
+        }
+    }
+}
+
+fn item_selector(n: u32) -> Selector {
     let selector = format!("body > div.wrap-main > section.content-main > div > div.catalog > div > div:nth-child({}) > div", n);
     Selector::parse(&selector).unwrap()
-}
-
-fn item_link() -> Selector {
-    Selector::parse("div.item__content > h4 > a").unwrap()
-}
-
-fn item_info() -> Selector {
-    Selector::parse("div.item__content > div.item__info").unwrap()
-}
-
-fn item_price() -> Selector {
-    Selector::parse("div.item__content > div.item__price-row > div").unwrap()
 }
 
 #[cfg(test)]
 mod tests {
     use super::*;
+    use insta::{assert_debug_snapshot, assert_display_snapshot};
+
     #[test]
     fn test_parse_price() {
         assert_eq!(parse_price("2 550 000 руб."), Some(2550000));
+    }
+
+    #[test]
+    fn scrape_single_page() {
+        let selectors = Selectors::new();
+        let html = include_str!("../fixtures/single_page.html");
+        let document = Html::parse_document(html);
+        let items = scrape_items(&document, &selectors);
+        assert_debug_snapshot!(items);
+    }
+
+    #[test]
+    fn display_item() {
+        let selectors = Selectors::new();
+        let html = include_str!("../fixtures/single_page.html");
+        let document = Html::parse_document(html);
+        let item = scrape_items(&document, &selectors)
+            .into_iter()
+            .next()
+            .unwrap();
+        assert_display_snapshot!(item)
     }
 }

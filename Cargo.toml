@@ -9,6 +9,9 @@ minreq = { version = "2.2", features = ["https-native"] }
 main_error = "0.1"
 scraper = "0.12"
 
+[dev-dependencies]
+insta = "0.16"
+
 [profile.release]
 opt-level = "s"
 panic = "abort"

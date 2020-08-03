@@ -1,0 +1,118 @@
+---
+source: src/main.rs
+expression: items
+---
+[
+    Item {
+        name: Some(
+            "Lexus NX300",
+        ),
+        info: Some(
+            "2019 г.в., 12 193 км, 1 998 см3, АКПП",
+        ),
+        price: Some(
+            "2 890 000 руб.",
+        ),
+        relative_url: Some(
+            "/auto/NX300/lexus-nx300-n3424777/",
+        ),
+    },
+    Item {
+        name: Some(
+            "Lexus NX300",
+        ),
+        info: Some(
+            "2019 г.в., 12 340 км, 1 998 см3, АКПП",
+        ),
+        price: Some(
+            "2 790 000 руб.",
+        ),
+        relative_url: Some(
+            "/auto/NX300/lexus-nx300-n3402891/",
+        ),
+    },
+    Item {
+        name: Some(
+            "Lexus NX200 AWD",
+        ),
+        info: Some(
+            "2016 г.в., 42 278 км, 1 986 см3",
+        ),
+        price: Some(
+            "1 850 000 руб.",
+        ),
+        relative_url: Some(
+            "/auto/NX200%20AWD/lexus-nx200-awd-n3424785/",
+        ),
+    },
+    Item {
+        name: Some(
+            "Lexus LX570",
+        ),
+        info: Some(
+            "2017 г.в., 51 693 км, 5 700 см3, АКПП",
+        ),
+        price: Some(
+            "5 350 000 руб.",
+        ),
+        relative_url: Some(
+            "/auto/LX570/lexus-lx570-n3414256/",
+        ),
+    },
+    Item {
+        name: Some(
+            "Lexus NX200T",
+        ),
+        info: Some(
+            "2017 г.в., 60 215 км, 1 998 см3, АКПП",
+        ),
+        price: Some(
+            "2 290 000 руб.",
+        ),
+        relative_url: Some(
+            "/auto/NX200T/lexus-nx200t-n3418380/",
+        ),
+    },
+    Item {
+        name: Some(
+            "Toyota Rav4",
+        ),
+        info: Some(
+            "2017 г.в., 67 717 км, 2 494 см3, АКПП",
+        ),
+        price: Some(
+            "1 750 000 руб.",
+        ),
+        relative_url: Some(
+            "/auto/Rav4/toyota-rav4-n3424769/",
+        ),
+    },
+    Item {
+        name: Some(
+            "VW Tiguan",
+        ),
+        info: Some(
+            "2013 г.в., 69 780 км, 2 000 см3, АКПП",
+        ),
+        price: Some(
+            "1 029 000 руб.",
+        ),
+        relative_url: Some(
+            "/auto/Tiguan/vw-tiguan-n3400362/",
+        ),
+    },
+    Item {
+        name: Some(
+            "Toyota Rav4",
+        ),
+        info: Some(
+            "2010 г.в., 80 471 км, 1 998 см3",
+        ),
+        price: Some(
+            "1 020 000 руб.",
+        ),
+        relative_url: Some(
+            "/auto/Rav4/toyota-rav4-n3215342/",
+        ),
+    },
+]
