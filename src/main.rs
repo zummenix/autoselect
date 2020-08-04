@@ -100,8 +100,8 @@ fn scrape_number_of_pages(document: &Html) -> u32 {
 
 fn parse_price(s: &str) -> Option<u64> {
     s.chars()
-        .take_while(|ch| ch.is_digit(10) || ch.is_whitespace())
-        .filter(|ch| ch.is_digit(10))
+        .take_while(|ch| ch.is_ascii_digit() || ch.is_whitespace())
+        .filter(|ch| ch.is_ascii_digit())
         .collect::<String>()
         .parse()
         .ok()
