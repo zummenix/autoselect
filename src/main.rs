@@ -29,7 +29,7 @@ impl fmt::Display for Item {
             writeln!(f, "{}", price)?;
         }
         if let Some(url) = &self.relative_url {
-            writeln!(f, "https://autoselect.ru{}", url)?;
+            write!(f, "https://autoselect.ru{}", url)?;
         }
         Ok(())
     }
@@ -46,8 +46,12 @@ fn main() -> Result<(), main_error::MainError> {
         items.extend(scrape_items(&document, &selectors));
     }
     items.sort_by_key(|item| item.price());
-    for item in &items {
-        println!("{}", item);
+    for (i, item) in items.iter().enumerate() {
+        if i + 1 < items.len() {
+            println!("{}\n", item);
+        } else {
+            println!("{}", item);
+        }
     }
     Ok(())
 }
