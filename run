@@ -23,6 +23,6 @@ if test "$CONFIRMATION" = "y"; then
     fi
     echo "$OUTPUT" >> "as.new"
 
-    diff -u "as.old" "as.new"
+    nvim -d "as.old" "as.new"
 fi
 
