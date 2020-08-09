@@ -11,12 +11,12 @@ if test $? -ne 0; then
     exit 1
 fi
 
-if test -e "as.new"; then
-    mv "as.new" "as.old"
+if test -e "new.txt"; then
+    mv "new.txt" "old.txt"
 else
-    echo "" >> "as.old"
+    echo "" >> "old.txt"
 fi
-echo "$OUTPUT" >> "as.new"
+echo "$OUTPUT" >> "new.txt"
 
-nvim -d "as.old" "as.new"
+nvim -d "old.txt" "new.txt"
 
