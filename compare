@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+
+which autoselect > /dev/null 2>&1
+if test $? -ne 0; then
+    echo "Run 'cargo install --release' to install the program"
+    exit 1
+fi
+
+OUTPUT=$(autoselect)
+if test $? -ne 0; then
+    exit 1
+fi
+
+if test -e "as.new"; then
+    mv "as.new" "as.old"
+else
+    echo "" >> "as.old"
+fi
+echo "$OUTPUT" >> "as.new"
+
+nvim -d "as.old" "as.new"
+

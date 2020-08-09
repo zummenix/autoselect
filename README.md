@@ -6,7 +6,7 @@ Scrapes car infos from https://autoselect.ru/
 
 Make sure you have rust compiler installed and then run `cargo install --release` in the directory.
 - `autoselect` CLI tool, prints the result
-- `./run` script runs `autoselect` and allows us to compare results from previous runs
+- `./compare` script runs `autoselect`, saves the result in a file and shows the diff using neovim
 
 ## Configuration
 
