@@ -47,10 +47,10 @@ fn main() -> Result<(), main_error::MainError> {
     }
     items.sort_by_key(|item| item.price());
     for (i, item) in items.iter().enumerate() {
-        if i + 1 < items.len() {
-            println!("{}\n", item);
-        } else {
+        if i == 0 {
             println!("{}", item);
+        } else {
+            println!("\n{}", item);
         }
     }
     Ok(())
