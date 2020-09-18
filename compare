@@ -18,5 +18,7 @@ else
 fi
 echo "$OUTPUT" >> "new.txt"
 
-nvim -d "old.txt" "new.txt"
+if ! cmp -s "old.txt" "new.txt"; then
+    nvim -d "old.txt" "new.txt"
+fi
 
