@@ -10,7 +10,7 @@ main_error = "0.1"
 scraper = "0.12"
 
 [dev-dependencies]
-insta = "0.16"
+insta = "1.1.0"
 
 [profile.release]
 opt-level = "s"
