@@ -2,7 +2,7 @@
 name = "autoselect"
 version = "0.1.0"
 authors = ["Aleksey Kuznetsov <zummenix@gmail.com>"]
-edition = "2018"
+edition = "2021"
 
 [dependencies]
 minreq = { version = "2.2", features = ["https-native"] }
