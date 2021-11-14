@@ -5,12 +5,12 @@ authors = ["Aleksey Kuznetsov <zummenix@gmail.com>"]
 edition = "2021"
 
 [dependencies]
-minreq = { version = "2.2", features = ["https-native"] }
+minreq = { version = "2.4", features = ["https-native"] }
 main_error = "0.1"
 scraper = "0.12"
 
 [dev-dependencies]
-insta = "1.1.0"
+insta = "1.8.0"
 
 [profile.release]
 opt-level = "s"
