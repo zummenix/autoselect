@@ -2,6 +2,9 @@
 
 Scrapes car infos from https://autoselect.ru/
 
+> NOTE: Scrapper doesn't work because autoselect.ru had changed their website some time ago.
+> Right now I don't have time and motivation to update it.
+
 ## Usage
 
 Make sure you have rust compiler installed and then run `cargo install --release` in the directory.
